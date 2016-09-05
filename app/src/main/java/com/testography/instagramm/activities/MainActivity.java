@@ -15,6 +15,10 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.testography.instagramm.R;
+import com.testography.instagramm.fragments.FeedActivityFragment;
+import com.testography.instagramm.fragments.HomeFragment;
+import com.testography.instagramm.fragments.ProfileFragment;
+import com.testography.instagramm.fragments.SearchFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -97,9 +101,17 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+
+            switch (position) {
+                case 0:
+                    return HomeFragment.newInstance();
+                case 1:
+                    return SearchFragment.newInstance();
+                case 2:
+                    return FeedActivityFragment.newInstance();
+                default:
+                    return ProfileFragment.newInstance();
+            }
         }
 
         @Override
