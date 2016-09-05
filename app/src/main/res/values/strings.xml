@@ -10,4 +10,6 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="action_legal">Privacy Policy</string>
+
+    <string name="title_activity_settings">Settings</string>
 </resources>
