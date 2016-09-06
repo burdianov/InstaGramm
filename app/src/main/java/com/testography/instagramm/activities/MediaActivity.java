@@ -149,11 +149,11 @@ public class MediaActivity extends AppCompatActivity {
     }
 
     public void retrieveAndSetImages() {
-        mImages.clear();
 
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
+                mImages.clear();
                 Cursor cursor = getContentResolver().query(MediaStore.Images.Media
                         .EXTERNAL_CONTENT_URI, null, null, null, null);
                 if (cursor != null) {
@@ -167,6 +167,12 @@ public class MediaActivity extends AppCompatActivity {
                         mImages.add(instaImage);
                     }
                 }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //TODO: set images on recyclerview adapter
+                    }
+                });
             }
         });
     }
