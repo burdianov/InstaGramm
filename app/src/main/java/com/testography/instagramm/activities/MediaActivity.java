@@ -14,9 +14,12 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.testography.instagramm.R;
 import com.testography.instagramm.model.InstaImage;
@@ -120,6 +123,15 @@ public class MediaActivity extends AppCompatActivity {
                 toggle();
             }
         });
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.content_images);
+        ImagesAdapter imagesAdapter = new ImagesAdapter(mImages);
+
+        GridLayoutManager layoutManager = new GridLayoutManager(getBaseContext(), 4);
+        layoutManager.setOrientation(GridLayoutManager.VERTICAL);
+
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(imagesAdapter);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission
                 .WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -228,5 +240,36 @@ public class MediaActivity extends AppCompatActivity {
     private void delayedHide(int delayMillis) {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
+    }
+
+    public class ImagesAdapter extends RecyclerView.Adapter<ImageViewHolder> {
+
+        private ArrayList<InstaImage> mInstaImages;
+
+        public ImagesAdapter(ArrayList<InstaImage> instaImages) {
+            mInstaImages = instaImages;
+        }
+
+        @Override
+        public ImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return null;
+        }
+
+        @Override
+        public void onBindViewHolder(ImageViewHolder holder, int position) {
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return mInstaImages.size();
+        }
+    }
+
+    public class ImageViewHolder extends RecyclerView.ViewHolder {
+
+        public ImageViewHolder(View itemView) {
+            super(itemView);
+        }
     }
 }
