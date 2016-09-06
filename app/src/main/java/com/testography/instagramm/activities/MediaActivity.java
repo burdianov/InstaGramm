@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -150,19 +151,24 @@ public class MediaActivity extends AppCompatActivity {
     public void retrieveAndSetImages() {
         mImages.clear();
 
-        Cursor cursor = getContentResolver().query(MediaStore.Images.Media
-                .EXTERNAL_CONTENT_URI, null, null, null, null);
-        if (cursor != null) {
-            cursor.moveToFirst();
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                Cursor cursor = getContentResolver().query(MediaStore.Images.Media
+                        .EXTERNAL_CONTENT_URI, null, null, null, null);
+                if (cursor != null) {
+                    cursor.moveToFirst();
 
-            for (int i = 0; i < cursor.getCount(); i++) {
-                cursor.moveToPosition(i);
-                Log.v("DONKEY", "URL: " + cursor.getString(1));
-                InstaImage instaImage = new InstaImage(Uri.parse(cursor.getString
-                        (1)));
-                mImages.add(instaImage);
+                    for (int i = 0; i < cursor.getCount(); i++) {
+                        cursor.moveToPosition(i);
+                        Log.v("DONKEY", "URL: " + cursor.getString(1));
+                        InstaImage instaImage = new InstaImage(Uri.parse(cursor.getString
+                                (1)));
+                        mImages.add(instaImage);
+                    }
+                }
             }
-        }
+        });
     }
 
     @Override
