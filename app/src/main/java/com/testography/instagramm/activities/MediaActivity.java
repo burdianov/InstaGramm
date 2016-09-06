@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.testography.instagramm.R;
 import com.testography.instagramm.model.InstaImage;
@@ -102,6 +103,7 @@ public class MediaActivity extends AppCompatActivity {
     };
 
     final int PERMISSION_READ_EXTERNAL = 111;
+    private ImageView mSelectedImage;
 
     private ArrayList<InstaImage> mImages = new ArrayList<>();
 
@@ -123,6 +125,8 @@ public class MediaActivity extends AppCompatActivity {
                 toggle();
             }
         });
+
+        mSelectedImage = (ImageView) findViewById(R.id.selected_image);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.content_images);
         ImagesAdapter imagesAdapter = new ImagesAdapter(mImages);
@@ -257,7 +261,17 @@ public class MediaActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(ImageViewHolder holder, int position) {
+            final InstaImage image = mInstaImages.get(position);
+            holder.updateUI(image);
 
+            final ImageViewHolder viewHolder = holder;
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mSelectedImage.setImageDrawable(viewHolder.mImageView.getDrawable());
+                }
+            });
         }
 
         @Override
@@ -268,8 +282,16 @@ public class MediaActivity extends AppCompatActivity {
 
     public class ImageViewHolder extends RecyclerView.ViewHolder {
 
+        private ImageView mImageView;
+
         public ImageViewHolder(View itemView) {
             super(itemView);
+
+            mImageView = (ImageView) itemView.findViewById(R.id.image_thumb);
+        }
+
+        public void updateUI(InstaImage image) {
+            //Convert / grap a real image from the URL
         }
     }
 }
