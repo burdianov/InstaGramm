@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import com.testography.instagramm.R;
 import com.testography.instagramm.model.InstaImage;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 /**
@@ -297,8 +298,35 @@ public class MediaActivity extends AppCompatActivity {
         }
 
         public void updateUI(InstaImage image) {
-            //Convert / grap a real image from the URL
-            mImageView.setImageBitmap(decodeURI(image.getImgResourceUri().getPath()));
+
+            DecodeBitmap task = new DecodeBitmap(mImageView, image);
+            task.execute();
+        }
+    }
+
+    class DecodeBitmap extends AsyncTask<Void, Void, Bitmap> {
+        private final WeakReference<ImageView> mImageViewWeakReference;
+        private InstaImage mImage;
+
+        public DecodeBitmap(ImageView imageView, InstaImage
+                image) {
+            mImageViewWeakReference = new WeakReference<ImageView>(imageView);
+            mImage = image;
+        }
+
+        @Override
+        protected Bitmap doInBackground(Void... voids) {
+            return decodeURI(mImage.getImgResourceUri().getPath());
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            super.onPostExecute(bitmap);
+            final ImageView img = mImageViewWeakReference.get();
+
+            if (img != null) {
+                img.setImageBitmap(bitmap);
+            }
         }
     }
 
